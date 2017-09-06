@@ -162,7 +162,7 @@
           // Save reference to network for later
           graph = s;
           graph.bind('clickNode', nodeClicked);
-          
+
           // Gephi and SigmaJS use difference coordinate systems
           // Invert Y-coordinates of all nodes to match Gephi figures
           nodes = graph.graph.nodes()
@@ -171,7 +171,7 @@
             nodes[i].y = nodes[i].y * -1;
             console.log(nodes[i].y);
           }
-          graph.refresh({ skipIndexation: true});
+          graph.refresh();
 
 
 
