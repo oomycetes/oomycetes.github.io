@@ -1,0 +1,46 @@
+#network-container {
+	left: 20px;
+	min-width: 70%;
+	max-width: 80%;
+	min-height: 70%;
+	max-height: 80%;
+	position: absolute;
+	background: #fff;
+	border: 1px solid #e7e7e7;
+}
+
+canvas{
+	position: absolute; z-index: 1
+}
+
+.loading {
+	border-top: 16px solid #FF5858;
+	border-right: 16px solid #FFD958;
+	border-bottom: 16px solid #746AF4;
+	border-left: 16px solid #55F855;
+	border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.popup-label {
+	font-weight: bold;
+}
+
+#species, #genus {
+	font-style: italic;
+}
+
+#sequence {
+	word-wrap: break-word;
+}
+
+.network-buttons {
+	z-index: 10;
+}
