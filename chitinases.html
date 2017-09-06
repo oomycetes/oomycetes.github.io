@@ -166,7 +166,7 @@
 
           // Gephi and SigmaJS use difference coordinate systems
           // Invert Y-coordinates of all nodes to match Gephi figures
-          nodes = graph.graph.nodes()
+          nodes = graph.nodes()
           for (var i = 0; i < nodes.length; i++) {
             console.log(nodes[i].y);
             nodes[i].y = nodes[i].y * -1;
