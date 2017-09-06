@@ -209,3 +209,128 @@ function idToSpecies(input_id) {
 function idToOrder(input_id) {
 	return(order_dict[input_id.substr(0,4)]).toUpperCase();
 }
+
+// Returns the methods/features that identified the node as a putative RxLR
+// Returns boolean array of Win, Regex, HMM, BLAST and WYL
+function getNodeValues(node) {
+	result = [];
+	if(node.attributes.Win == "1") {
+		result["win"] = true;
+
+	}
+	else {
+		result["win"] = false;
+	}
+	if(node.attributes.Regex == "1") {
+		result['regex'] = true;
+	}
+	else {
+		result['regex'] = false;
+	}
+	if(node.attributes.HMM == "1") {
+		result['hmm'] = true;
+	}
+	else {
+		result['hmm'] = false;
+	}
+	if(node.attributes.BLAST == "1") {
+		result['blast'] = true;
+	}
+	else {
+		result['blast'] = false;
+	}
+	if(node.attributes.WYLdomain == "Y") {
+		result['wyl'] = true;
+	}
+	else {
+		result['wyl'] = false;
+	}
+	return result;
+}
+
+$("#win-check").click(function() {
+	filter_methods();
+})
+
+$("#regex-check").click(function() {
+	filter_methods();
+})
+
+$("#hmm-check").click(function() {
+	filter_methods();
+})
+
+$("#blast-check").click(function() {
+	filter_methods();
+})
+
+$("#wyl-check").click(function() {
+	filter_methods();
+})
+
+function filter_methods() {
+	nodes = graph.graph.nodes();
+
+	if( $("#win-check").is(":checked")) {
+		win_check = true;
+	}
+	else {
+		win_check = false;
+	}
+
+	if( $("#regex-check").is(":checked")) {
+		regex_check = true;
+	}
+	else {
+		regex_check = false;
+	}
+
+	if( $("#hmm-check").is(":checked")) {
+		hmm_check = true;
+	}
+	else {
+		hmm_check = false;
+	}
+
+	if( $("#blast-check").is(":checked")) {
+		blast_check = true;
+	}
+	else {
+		blast_check = false;
+	}
+
+	if( $("#wyl-check").is(":checked")) {
+		wyl_check = true;
+	}
+	else {
+		wyl_check = false;
+	}
+
+	n_visible = nodes.length;
+	for (var i = 0; i < nodes.length; i++) {
+		node = nodes[i];
+		methods = getNodeValues(node);
+
+		if( win_check && methods['win'] == true ) {
+			node.hidden = false;
+		}
+		else if ( regex_check && methods['regex'] == true ) {
+			node.hidden = false;
+		}
+		else if ( hmm_check && methods['hmm'] == true ) {
+			node.hidden = false;
+		}
+		else if ( blast_check && methods['blast'] == true ) {
+			node.hidden = false;
+		}
+		else if ( wyl_check && methods['wyl'] == true ) {
+			node.hidden = false;
+		}
+		else {
+			node.hidden = true;
+			n_visible -= 1;
+		}
+	}
+	console.log(n_visible + " nodes visible");
+	graph.refresh({ skipIndexation: true});
+}

@@ -143,7 +143,15 @@
 				</div>
 				<br><button type="button" id="button-edges" class="btn btn-default navbar-btn navbar-left">Toggle Edges</button>
 				<br><button type="button" id="button-labels" class="btn btn-default navbar-btn navbar-left">Toggle Labels</button>
-				<br><input type="text" class="form-control" id="filter" placeholder="Filter by">
+
+
+				<br><input type="text" class="form-control" id="filter" placeholder="Filter by ID, Species...">
+				<br><strong>Filter by method/feature:</strong>
+				<br><input type="checkbox" checked id="win-check"> Win method</input>
+				<br><input type="checkbox" checked id="regex-check"> Regex method</input>
+				<br><input type="checkbox" checked id="hmm-check"> HMM method</input>
+				<br><input type="checkbox" checked id="blast-check"> BLAST method</input>
+				<br><input type="checkbox" checked id="wyl-check"> WYL domain</input>
 			</div> 
 			<br>
 			<div class="loading"></div>
@@ -177,9 +185,7 @@
 					// Invert Y-coordinates of all nodes to match Gephi figures
 					nodes = graph.graph.nodes()
 					for (var i = 0; i < nodes.length; i++) {
-						console.log(nodes[i].y);
 						nodes[i].y = nodes[i].y * -1;
-						console.log(nodes[i].y);
 					}
 					graph.refresh();
 
