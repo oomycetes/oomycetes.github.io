@@ -163,6 +163,16 @@ function getSequence(id, file_path) {
 	}, 'text');
 };
 
+
+$("#button-close_help-modal1").click(function() {
+	$("#modal-help").modal("hide");
+})
+
+$("#button-close_help-modal2").click(function() {
+	$("#modal-help").modal("hide");
+})
+
+
 $("#blast").click(function() {
 	window.open("https://blast.ncbi.nlm.nih.gov/Blast.cgi?PROGRAM=blastp&PAGE_TYPE=BlastSearch&QUERY=" + current_sequence)
 });

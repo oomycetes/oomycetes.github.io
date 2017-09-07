@@ -67,6 +67,7 @@
 	<body>
 
 		<!-- Have modal at top level -->
+		<!-- Modal for protein info -->
 		<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modal-label">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
@@ -98,6 +99,25 @@
 					</div>
 				</div>
 			</div>
+		</div>
+
+		<!-- Modal for help/info popup -->
+		<div class="modal fade" id="modal-help" tabindex="-1" role="dialog" aria-labelledby="modal-label">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button id="button-close_help-modal1" type="button" class="close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title" id="modal-label">Help</h4>
+					</div>
+					<div class="modal-body">
+						
+					<div class="modal-footer">
+						
+						<button id="button-close_help-modal2" type="button" class="btn btn-default">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
 		</div>
 
 		<nav class="navbar navbar-default navbar-fixed-top">
@@ -134,7 +154,7 @@
 			</div>
 
 			<!-- Buttons for adjusting network behavior -->
-			<div class="network-buttons navbar-right">
+			<div class="network-buttons navbar-right" style="z-index: 50">
 				<!-- Group of zooming buttons -->
 				<div class="btn-group" role="group" aria-label="...">
 					<button type="button" id="button-in" class="btn btn-default"><span class="glyphicon glyphicon-zoom-in" aria-hidden="true"></span></button>
@@ -152,11 +172,20 @@
 				<br><input type="checkbox" checked id="hmm-check"> HMM method</input>
 				<br><input type="checkbox" checked id="blast-check"> BLAST method</input>
 				<br><input type="checkbox" checked id="wyl-check"> WYL domain</input>
+
+				<br><br><button type="button" id="button-help" class="btn btn-default" data-toggle="modal" data-target="#modal-help"><span class="glyphicon glyphicon-info-sign"> </span> Help</button>
 			</div> 
 			<br>
 			<div class="loading"></div>
 			<div id="network-container"></div>
 		</div>
+
+		<footer class="footer" style="z-index:50">
+			<div class="container">
+			<p class="text-muted">Genome Evolution Lab, <a href="https://www.maynoothuniversity.ie/biology" target="_blank">Biology Department</a>, <a href="https://www.maynoothuniversity.ie" target="_blank">Maynooth University</a> - 2017.</p>
+			</div>
+		</footer>
+
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 		<script src="js/main.js"></script>
