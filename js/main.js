@@ -209,7 +209,6 @@ $('#filter').on('input', function() {
 		graph.refresh({ skipIndexation: true});
     }, delay));
 
-	
 });
 
 function idToSpecies(input_id) {
