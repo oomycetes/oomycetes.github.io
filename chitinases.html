@@ -1,221 +1,266 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Network analysis of Oomycete Effectors">
-    <meta name="author" content="Jamie McGowan">
-    
-    <title>Oomycete Chitinases</title>
-    
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link href="css/styles.css" rel="stylesheet">
-    <link href="css/network_pages.css" rel="stylesheet">
-    <link href="css/ie10-viewport-bug-workaround.css" rel="stylesheet">
-    <!-- Load SigmaJS libraries -->
-    <script src="js/sigma.core.js"></script>
-    <script src="js/conrad.js"></script>
-    <script src="js/utils/sigma.utils.js"></script>
-    <script src="js/utils/sigma.polyfills.js"></script>
-    <script src="js/sigma.settings.js"></script>
-    <script src="js/classes/sigma.classes.dispatcher.js"></script>
-    <script src="js/classes/sigma.classes.configurable.js"></script>
-    <script src="js/classes/sigma.classes.graph.js"></script>
-    <script src="js/classes/sigma.classes.camera.js"></script>
-    <script src="js/classes/sigma.classes.quad.js"></script>
-    <script src="js/classes/sigma.classes.edgequad.js"></script>
-    <script src="js/captors/sigma.captors.mouse.js"></script>
-    <script src="js/captors/sigma.captors.touch.js"></script>
-    <script src="js/renderers/sigma.renderers.canvas.js"></script>
-    <script src="js/renderers/sigma.renderers.webgl.js"></script>
-    <script src="js/renderers/sigma.renderers.svg.js"></script>
-    <script src="js/renderers/sigma.renderers.def.js"></script>
-    <script src="js/renderers/webgl/sigma.webgl.nodes.def.js"></script>
-    <script src="js/renderers/webgl/sigma.webgl.nodes.fast.js"></script>
-    <script src="js/renderers/webgl/sigma.webgl.edges.def.js"></script>
-    <script src="js/renderers/webgl/sigma.webgl.edges.fast.js"></script>
-    <script src="js/renderers/webgl/sigma.webgl.edges.arrow.js"></script>
-    <script src="js/renderers/canvas/sigma.canvas.labels.def.js"></script>
-    <script src="js/renderers/canvas/sigma.canvas.hovers.def.js"></script>
-    <script src="js/renderers/canvas/sigma.canvas.nodes.def.js"></script>
-    <script src="js/renderers/canvas/sigma.canvas.edges.def.js"></script>
-    <script src="js/renderers/canvas/sigma.canvas.edges.curve.js"></script>
-    <script src="js/renderers/canvas/sigma.canvas.edges.arrow.js"></script>
-    <script src="js/renderers/canvas/sigma.canvas.edges.curvedArrow.js"></script>
-    <script src="js/renderers/canvas/sigma.canvas.edgehovers.def.js"></script>
-    <script src="js/renderers/canvas/sigma.canvas.edgehovers.curve.js"></script>
-    <script src="js/renderers/canvas/sigma.canvas.edgehovers.arrow.js"></script>
-    <script src="js/renderers/canvas/sigma.canvas.edgehovers.curvedArrow.js"></script>
-    <script src="js/renderers/canvas/sigma.canvas.extremities.def.js"></script>
-    <script src="js/renderers/svg/sigma.svg.utils.js"></script>
-    <script src="js/renderers/svg/sigma.svg.nodes.def.js"></script>
-    <script src="js/renderers/svg/sigma.svg.edges.def.js"></script>
-    <script src="js/renderers/svg/sigma.svg.edges.curve.js"></script>
-    <script src="js/renderers/svg/sigma.svg.labels.def.js"></script>
-    <script src="js/renderers/svg/sigma.svg.hovers.def.js"></script>
-    <script src="js/middlewares/sigma.middlewares.rescale.js"></script>
-    <script src="js/middlewares/sigma.middlewares.copy.js"></script>
-    <script src="js/misc/sigma.misc.animation.js"></script>
-    <script src="js/misc/sigma.misc.bindEvents.js"></script>
-    <script src="js/misc/sigma.misc.bindDOMEvents.js"></script>
-    <script src="js/misc/sigma.misc.drawHovers.js"></script>
-    <script src="js/sigma.parsers.json/sigma.parsers.json.js"></script>
-    <!-- End of SigmaJS libraries -->
-  </head>
-  <body>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="Network analysis of Oomycete Effectors">
+		<meta name="author" content="Jamie McGowan">
 
-    <!-- Have modal at top level -->
-    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modal-label">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="modal-label">Protein ID</h4>
-          </div>
-          <div class="modal-body">
-            <p><span class="popup-label">Protein ID: </span><span id="protein-id"></span><p>
-            <p><span class="popup-label">Species: </span><span id="species"></span><p>
-            <p><span class="popup-label">Genus: </span><span id="genus"></span><p>
-            <p><span class="popup-label">Order: </span><span id="order"></span><p>
-            <hr>
+		<title>Oomycete Chitinases</title>
 
-            <p><span class="popup-label" title="Node degree is the number of edges a node has (i.e. the number of homologs a protein has in the network).">Node Degree: </span><span id="degree"></span><p>
-            <p><span class="popup-label">Protein Length: </span><span id="protein-length"></span><p>
-            <p><span class="popup-label">Sequence: </span><span id="sequence"></span><p>
-          </div>
-          <div class="modal-footer">
-            <button id="blast" type="button" class="btn btn-primary" title="BLAST this sequence against the NCBI databases">BLAST</button>
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          </div>
-        </div>
-      </div>
-    </div>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+		<link href="css/styles.css" rel="stylesheet">
+		<link href="css/network_pages.css" rel="stylesheet">
+		<link href="css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+		<!-- Load SigmaJS libraries -->
+		<script src="js/sigma.core.js"></script>
+		<script src="js/conrad.js"></script>
+		<script src="js/utils/sigma.utils.js"></script>
+		<script src="js/utils/sigma.polyfills.js"></script>
+		<script src="js/sigma.settings.js"></script>
+		<script src="js/classes/sigma.classes.dispatcher.js"></script>
+		<script src="js/classes/sigma.classes.configurable.js"></script>
+		<script src="js/classes/sigma.classes.graph.js"></script>
+		<script src="js/classes/sigma.classes.camera.js"></script>
+		<script src="js/classes/sigma.classes.quad.js"></script>
+		<script src="js/classes/sigma.classes.edgequad.js"></script>
+		<script src="js/captors/sigma.captors.mouse.js"></script>
+		<script src="js/captors/sigma.captors.touch.js"></script>
+		<script src="js/renderers/sigma.renderers.canvas.js"></script>
+		<script src="js/renderers/sigma.renderers.webgl.js"></script>
+		<script src="js/renderers/sigma.renderers.svg.js"></script>
+		<script src="js/renderers/sigma.renderers.def.js"></script>
+		<script src="js/renderers/webgl/sigma.webgl.nodes.def.js"></script>
+		<script src="js/renderers/webgl/sigma.webgl.nodes.fast.js"></script>
+		<script src="js/renderers/webgl/sigma.webgl.edges.def.js"></script>
+		<script src="js/renderers/webgl/sigma.webgl.edges.fast.js"></script>
+		<script src="js/renderers/webgl/sigma.webgl.edges.arrow.js"></script>
+		<script src="js/renderers/canvas/sigma.canvas.labels.def.js"></script>
+		<script src="js/renderers/canvas/sigma.canvas.hovers.def.js"></script>
+		<script src="js/renderers/canvas/sigma.canvas.nodes.def.js"></script>
+		<script src="js/renderers/canvas/sigma.canvas.edges.def.js"></script>
+		<script src="js/renderers/canvas/sigma.canvas.edges.curve.js"></script>
+		<script src="js/renderers/canvas/sigma.canvas.edges.arrow.js"></script>
+		<script src="js/renderers/canvas/sigma.canvas.edges.curvedArrow.js"></script>
+		<script src="js/renderers/canvas/sigma.canvas.edgehovers.def.js"></script>
+		<script src="js/renderers/canvas/sigma.canvas.edgehovers.curve.js"></script>
+		<script src="js/renderers/canvas/sigma.canvas.edgehovers.arrow.js"></script>
+		<script src="js/renderers/canvas/sigma.canvas.edgehovers.curvedArrow.js"></script>
+		<script src="js/renderers/canvas/sigma.canvas.extremities.def.js"></script>
+		<script src="js/renderers/svg/sigma.svg.utils.js"></script>
+		<script src="js/renderers/svg/sigma.svg.nodes.def.js"></script>
+		<script src="js/renderers/svg/sigma.svg.edges.def.js"></script>
+		<script src="js/renderers/svg/sigma.svg.edges.curve.js"></script>
+		<script src="js/renderers/svg/sigma.svg.labels.def.js"></script>
+		<script src="js/renderers/svg/sigma.svg.hovers.def.js"></script>
+		<script src="js/middlewares/sigma.middlewares.rescale.js"></script>
+		<script src="js/middlewares/sigma.middlewares.copy.js"></script>
+		<script src="js/misc/sigma.misc.animation.js"></script>
+		<script src="js/misc/sigma.misc.bindEvents.js"></script>
+		<script src="js/misc/sigma.misc.bindDOMEvents.js"></script>
+		<script src="js/misc/sigma.misc.drawHovers.js"></script>
+		<script src="js/sigma.parsers.json/sigma.parsers.json.js"></script>
+		<!-- End of SigmaJS libraries -->
+	</head>
+	<body>
 
-    <nav class="navbar navbar-default navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="index.html">Oomycete Effectors</a>
-        </div>
-        <div id="navbar" class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
-            <li class="active dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Networks <span class="caret"></span></a>
-              <ul class="dropdown-menu">
-                <li class="active"><a href="#">Chitinases</a></li>
-                <li><a href="nlps.html">Necrosis-inducing Proteins</a></li>
-                <li><a href="rxlrs.html">RxLRs</a></li>
-              </ul>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-    <div class="container">
-      <div class="page-header">
-        <h2>Oomycete Chitinases</h2>
-      </div>
+		<!-- Have modal at top level -->
+		<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modal-label">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title" id="modal-label">Protein ID</h4>
+					</div>
+					<div class="modal-body">
+						<p><span class="popup-label">Protein ID: </span><span id="protein-id"></span><p>
+						<p><span class="popup-label">Species: </span><span id="species"></span><p>
+						<p><span class="popup-label">Genus: </span><span id="genus"></span><p>
+						<p><span class="popup-label">Order: </span><span id="order"></span><p>
+						<hr>
 
-      <!-- Buttons for adjusting network behavior -->
-      <div class="network-buttons navbar-right">
-        <!-- Group of zooming buttons -->
-        <div class="btn-group" role="group" aria-label="...">
-          <button type="button" id="button-in" class="btn btn-default"><span class="glyphicon glyphicon-zoom-in" aria-hidden="true"></span></button>
-          <button type="button" id="button-out" class="btn btn-default"><span class="glyphicon glyphicon-zoom-out" aria-hidden="true"></span></button>
-          <button type="button" id="button-home" class="btn btn-default"><span class="glyphicon glyphicon-home" aria-hidden="true"></span></button>
-        </div>
-        <br><button type="button" id="button-edges" class="btn btn-default navbar-btn navbar-left">Toggle Edges</button>
-        <br><button type="button" id="button-labels" class="btn btn-default navbar-btn navbar-left">Toggle Labels</button>
-        <br><input type="text" class="form-control" id="filter" placeholder="Filter by ID, Species...">
-      </div> 
-      <br>
-      <div class="loading"></div>
-      <div id="network-container"></div>
-    </div>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-    <script src="js/main.js"></script>
-    <script src="js/ie10-viewport-bug-workaround.js"></script>
-    
-    <!-- JS to load the network file -->
-    <script>
-      var graph;
-      var default_zoom;
-      sigma.parsers.json(
-        "./data/chitinases.json",
-        {
-          container: 'network-container',
-          settings: {
-            defaultLabelSize: 12
-          }
-        },
-        function(s) {
-          // Save reference to network for later
-          graph = s;
-          graph.bind('clickNode', nodeClicked);
+						<p><span class="popup-label" title="Node degree is the number of edges a node has (i.e. the number of homologs a protein has in the network).">Node Degree: </span><span id="degree"></span><p>
+						<p><span class="popup-label">Protein Length: </span><span id="protein-length"></span><p>
+						<p><span class="popup-label">Sequence: </span><span id="sequence"></span><p>
+					</div>
+					<div class="modal-footer">
+						<button id="blast" type="button" class="btn btn-primary" title="BLAST this sequence against the NCBI databases">BLAST</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
 
-          // Gephi and SigmaJS use difference coordinate systems
-          // Invert Y-coordinates of all nodes to match Gephi figures
-          nodes = graph.graph.nodes()
-          for (var i = 0; i < nodes.length; i++) {
-            console.log(nodes[i].y);
-            nodes[i].y = nodes[i].y * -1;
-            console.log(nodes[i].y);
-          }
-          graph.refresh();
+		<!-- Modal for help/info popup -->
+		<div class="modal fade" id="modal-help" tabindex="-1" role="dialog" aria-labelledby="modal-label">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button id="button-close_help-modal1" type="button" class="close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title" id="modal-label">Help</h4>
+					</div>
+					<div class="modal-body">
+						<p>This is a sequence similarty network. Each node represents a protein. An edge/line joining two nodes represents shared sequence similarity between the two proteins. Proteins are coloured according to their genus.</p>
+						<p>The network can be filtered to hide/show particular proteins (e.g. by Genus or Order) using the buttons on the right.</p>
+						<hr>
+						<h4>How to use</h4>
+						<p><img src="./images/help_screenshot.png" width="50%"></p>
+						<p>
+							<ol>
+								<li><strong>Left to right</strong>:
+									<ul>
+										<li><span class="glyphicon glyphicon-zoom-in"></span> Zoom in</li>
+										<li><span class="glyphicon glyphicon-zoom-out"></span> Zoom out</li>
+										<li><span class="glyphicon glyphicon-home"></span> Center view on network</li>
+									</ul>
+								</li>
+								<li><strong>Toggle Edges:</strong> hides/shows all edges in the network. Hiding edges improves performance</li>
+								<li><strong>Toggle Labels:</strong> hides/shows labels for all nodes in the network. Hiding labels improves performance </li>
+								<li><strong>Filter box:</strong> type a query here to filter by Protein ID, Species, Genus or Order</li>
+							</ol>
+						</p>
+
+					<div class="modal-footer">            
+						<button id="button-close_help-modal2" type="button" class="btn btn-default">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		</div>
+
+		<nav class="navbar navbar-default navbar-fixed-top">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="index.html">Oomycete Effectors</a>
+				</div>
+				<div id="navbar" class="collapse navbar-collapse">
+					<ul class="nav navbar-nav">
+						<li><a href="index.html">Home</a></li>
+						<li><a href="#about">About</a></li>
+						<li><a href="#contact">Contact</a></li>
+						<li class="active dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Networks <span class="caret"></span></a>
+							<ul class="dropdown-menu">
+								<li class="active"><a href="#">Chitinases</a></li>
+								<li><a href="nlps.html">Necrosis-inducing Proteins</a></li>
+								<li><a href="rxlrs.html">RxLRs</a></li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+		<div class="container">
+			<div class="page-header">
+				<h2>Oomycete Chitinases</h2>
+			</div>
+
+			<!-- Buttons for adjusting network behavior -->
+			<div class="network-buttons navbar-right">
+				<!-- Group of zooming buttons -->
+				<div class="btn-group" role="group" aria-label="...">
+					<button type="button" id="button-in" class="btn btn-default"><span class="glyphicon glyphicon-zoom-in" aria-hidden="true"></span></button>
+					<button type="button" id="button-out" class="btn btn-default"><span class="glyphicon glyphicon-zoom-out" aria-hidden="true"></span></button>
+					<button type="button" id="button-home" class="btn btn-default"><span class="glyphicon glyphicon-home" aria-hidden="true"></span></button>
+				</div>
+				<br><button type="button" id="button-edges" class="btn btn-default navbar-btn navbar-left">Toggle Edges</button>
+				<br><button type="button" id="button-labels" class="btn btn-default navbar-btn navbar-left">Toggle Labels</button>
+				<br><input type="text" class="form-control" id="filter" placeholder="Filter by ID, Species...">
+				<br><button type="button" id="button-help" class="btn btn-default" data-toggle="modal" data-target="#modal-help"><span class="glyphicon glyphicon-info-sign"> </span> Help</button>
+			</div> 
+			<br>
+			<div class="loading"></div>
+			<div id="network-container"></div>
+		</div>
+
+		<footer class="footer" style="z-index:50">
+			<div class="container">
+			<p class="text-muted">Genome Evolution Lab, <a href="https://www.maynoothuniversity.ie/biology" target="_blank">Biology Department</a>, <a href="https://www.maynoothuniversity.ie" target="_blank">Maynooth University</a> - 2017.</p>
+			</div>
+		</footer>
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+		<script src="js/main.js"></script>
+		<script src="js/ie10-viewport-bug-workaround.js"></script>
+		
+		<!-- JS to load the network file -->
+		<script>
+			var graph;
+			var default_zoom;
+			sigma.parsers.json(
+				"./data/chitinases.json",
+				{
+					container: 'network-container',
+					settings: {
+						defaultLabelSize: 12
+					}
+				},
+				function(s) {
+					// Save reference to network for later
+					graph = s;
+					graph.bind('clickNode', nodeClicked);
+
+					// Gephi and SigmaJS use difference coordinate systems
+					// Invert Y-coordinates of all nodes to match Gephi figures
+					nodes = graph.graph.nodes()
+					for (var i = 0; i < nodes.length; i++) {
+						console.log(nodes[i].y);
+						nodes[i].y = nodes[i].y * -1;
+						console.log(nodes[i].y);
+					}
+					graph.refresh();
 
 
 
-          // Fixes bug where node labels aren't shown on hover when drawLabels = false
-          //graph.settings('drawLabels', false);
-          //graph.refresh();
+					// Fixes bug where node labels aren't shown on hover when drawLabels = false
+					//graph.settings('drawLabels', false);
+					//graph.refresh();
 
-          default_zoom = graph.camera.ratio;
+					default_zoom = graph.camera.ratio;
 
 
-          // Hide the loading icon
-          $('.loading').hide();
+					// Hide the loading icon
+					$('.loading').hide();
 
-          $('#button-in').click(function() {
-            graph.camera.goTo({
-              ratio: graph.camera.ratio / graph.camera.settings('zoomingRatio')
-            });
-          });
+					$('#button-in').click(function() {
+						graph.camera.goTo({
+							ratio: graph.camera.ratio / graph.camera.settings('zoomingRatio')
+						});
+					});
 
-          $('#button-out').click(function() {
-            graph.camera.goTo({
-              ratio: graph.camera.ratio * graph.camera.settings('zoomingRatio')
-            });
-          });
-        
-          $('#button-home').click(function() {
-            graph.camera.goTo({
-              ratio: default_zoom,
-              x: 0,
-              y: 0
-            });
-          });
+					$('#button-out').click(function() {
+						graph.camera.goTo({
+							ratio: graph.camera.ratio * graph.camera.settings('zoomingRatio')
+						});
+					});
+				
+					$('#button-home').click(function() {
+						graph.camera.goTo({
+							ratio: default_zoom,
+							x: 0,
+							y: 0
+						});
+					});
 
-          $('#button-edges').click(function() {
-            graph.settings('drawEdges', !graph.settings('drawEdges'));
-            graph.refresh({ skipIndexation: true});
-          });
+					$('#button-edges').click(function() {
+						graph.settings('drawEdges', !graph.settings('drawEdges'));
+						graph.refresh({ skipIndexation: true});
+					});
 
-          $('#button-labels').click(function() {
-            graph.settings('drawLabels', !graph.settings('drawLabels'));
-            graph.refresh({ skipIndexation: true});
-          })
+					$('#button-labels').click(function() {
+						graph.settings('drawLabels', !graph.settings('drawLabels'));
+						graph.refresh({ skipIndexation: true});
+					})
 
-        });
-    </script>
-  </body>
+				});
+		</script>
+	</body>
 </html>

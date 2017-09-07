@@ -6,9 +6,9 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="description" content="Network analysis of Oomycete Effectors">
 		<meta name="author" content="Jamie McGowan">
-		
+
 		<title>Oomycete RxLRs</title>
-		
+
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 		<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
 		<link href="css/styles.css" rel="stylesheet">
@@ -110,7 +110,38 @@
 						<h4 class="modal-title" id="modal-label">Help</h4>
 					</div>
 					<div class="modal-body">
-						
+						<p>This is a sequence similarty network. Each node represents a protein. An edge/line joining two nodes represents shared sequence similarity between the two proteins. Proteins are coloured according to their genus.</p>
+						<p>The network can be filtered to hide/show particular proteins (e.g. by Genus or Order) using the buttons on the right.</p>
+						<hr>
+						<h4>How to use</h4>
+						<p><img src="./images/help_screenshot.png" width="50%"></p>
+						<p>
+							<ol>
+								<li><strong>Left to right</strong>:
+									<ul>
+										<li><span class="glyphicon glyphicon-zoom-in"></span> Zoom in</li>
+										<li><span class="glyphicon glyphicon-zoom-out"></span> Zoom out</li>
+										<li><span class="glyphicon glyphicon-home"></span> Center view on network</li>
+									</ul>
+								</li>
+								<li><strong>Toggle Edges:</strong> hides/shows all edges in the network. Hiding edges improves performance</li>
+								<li><strong>Toggle Labels:</strong> hides/shows labels for all nodes in the network. Hiding labels improves performance </li>
+								<li><strong>Filter box:</strong> type a query here to filter by Protein ID, Species, Genus or Order</li>
+							</ol>
+						</p>
+
+						<!-- Specific for RxLR network -->
+						<br><hr><h5>Filter by method/feature</h5>
+						<p>For RxLR effectors, proteins can also be filtered by the method that identified or their features them using the checkboxes.</p>
+						<ul>
+							<li><strong>Win method:</strong> show proteins that were identified via Win method</li>
+							<li><strong>Regex method:</strong> show proteins that were identified via Regex method</li>
+							<li><strong>HMM method:</strong> show proteins that were identified via HMM method</li>
+							<li><strong>BLAST method:</strong> show proteins that were identified as homologous to reference RxLRs via BLAST</li>
+							<li><strong>WYL domain:</strong> show proteins that have one or more WYL domains</li>
+						</ul>
+
+
 					<div class="modal-footer">
 						
 						<button id="button-close_help-modal2" type="button" class="btn btn-default">Close</button>
@@ -239,7 +270,7 @@
 							ratio: graph.camera.ratio * graph.camera.settings('zoomingRatio')
 						});
 					});
-				
+
 					$('#button-home').click(function() {
 						graph.camera.goTo({
 							ratio: default_zoom,

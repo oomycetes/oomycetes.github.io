@@ -6,9 +6,9 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="description" content="Network analysis of Oomycete Effectors">
 		<meta name="author" content="Jamie McGowan">
-		
+
 		<title>Oomycete Necrosis-inducing Proteins (NLPs)</title>
-		
+
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 		<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
 		<link href="css/styles.css" rel="stylesheet">
@@ -92,6 +92,43 @@
 			</div>
 		</div>
 
+		<!-- Modal for help/info popup -->
+		<div class="modal fade" id="modal-help" tabindex="-1" role="dialog" aria-labelledby="modal-label">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button id="button-close_help-modal1" type="button" class="close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title" id="modal-label">Help</h4>
+					</div>
+					<div class="modal-body">
+						<p>This is a sequence similarty network. Each node represents a protein. An edge/line joining two nodes represents shared sequence similarity between the two proteins. Proteins are coloured according to their genus.</p>
+						<p>The network can be filtered to hide/show particular proteins (e.g. by Genus or Order) using the buttons on the right.</p>
+						<hr>
+						<h4>How to use</h4>
+						<p><img src="./images/help_screenshot.png" width="50%"></p>
+						<p>
+							<ol>
+								<li><strong>Left to right</strong>:
+									<ul>
+										<li><span class="glyphicon glyphicon-zoom-in"></span> Zoom in</li>
+										<li><span class="glyphicon glyphicon-zoom-out"></span> Zoom out</li>
+										<li><span class="glyphicon glyphicon-home"></span> Center view on network</li>
+									</ul>
+								</li>
+								<li><strong>Toggle Edges:</strong> hides/shows all edges in the network. Hiding edges improves performance</li>
+								<li><strong>Toggle Labels:</strong> hides/shows labels for all nodes in the network. Hiding labels improves performance </li>
+								<li><strong>Filter box:</strong> type a query here to filter by Protein ID, Species, Genus or Order</li>
+							</ol>
+						</p>
+
+					<div class="modal-footer">						
+						<button id="button-close_help-modal2" type="button" class="btn btn-default">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		</div>
+
 		<nav class="navbar navbar-default navbar-fixed-top">
 			<div class="container">
 				<div class="navbar-header">
@@ -136,16 +173,24 @@
 				<br><button type="button" id="button-edges" class="btn btn-default navbar-btn navbar-left">Toggle Edges</button>
 				<br><button type="button" id="button-labels" class="btn btn-default navbar-btn navbar-left">Toggle Labels</button>
 				<br><input type="text" class="form-control" id="filter" placeholder="Filter by ID, Species...">
+				<br><button type="button" id="button-help" class="btn btn-default" data-toggle="modal" data-target="#modal-help"><span class="glyphicon glyphicon-info-sign"> </span> Help</button>
 			</div> 
 			<br>
 			<div class="loading"></div>
 			<div id="network-container"></div>
 		</div>
+
+		<footer class="footer" style="z-index:50">
+			<div class="container">
+			<p class="text-muted">Genome Evolution Lab, <a href="https://www.maynoothuniversity.ie/biology" target="_blank">Biology Department</a>, <a href="https://www.maynoothuniversity.ie" target="_blank">Maynooth University</a> - 2017.</p>
+			</div>
+		</footer>
+
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 		<script src="js/main.js"></script>
 		<script src="js/ie10-viewport-bug-workaround.js"></script>
-		
+
 		<!-- JS to load the network file -->
 		<script>
 			var graph;
