@@ -99,7 +99,6 @@ def main():
 					wyl_hits[hit_id] = hit_bitscore
 
 	# Also identify homologs to reference RxLRs (from Haas et al. 2009) via Blast
-	# This is quite slow as all oomycete results are pooled together
 	secreted_blast_hits = {}
 	secreted_blast_hits_seqs = {}
 	with open(blast_file, 'r') as f:
@@ -114,7 +113,7 @@ def main():
 				else:
 					secreted_blast_hits[protein] = set([hit])
 
-	# Get the sequences for ptoteins that have a hit to a reference effector (inefficient)
+	# Get the sequences for proteins that have a hit to a reference effector (inefficient)
 	for record in SeqIO.parse(fasta_file, 'fasta'):
 		if str(record.id) in secreted_blast_hits:
 			secreted_blast_hits_seqs[str(record.id)] = [len(str(record.seq)), str(record.seq)]
