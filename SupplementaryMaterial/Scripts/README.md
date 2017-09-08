@@ -7,7 +7,9 @@ The Python script `generate_list_rxlrs.py` is used to generate lists of candidat
 
 Additionally potential RxLRs were screened to detect if they contain a WYL domain using HMMsearch.
 
-Example usage: `python generate_list_rxlrs.py PHIF.fasta PHIF.signalp hmmsearch_cropped_PHIF.tab hmmsearch_wyl_PHIF.tab blast_PHIF.tab`
+Example usage:
+
+	python generate_list_rxlrs.py PHIF.fasta PHIF.signalp hmmsearch_cropped_PHIF.tab hmmsearch_wyl_PHIF.tab blast_PHIF.tab
 
 Input for `generate_list_rxlrs.py` is:
 
