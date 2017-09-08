@@ -1,8 +1,8 @@
-.
-├── Downloaded
-├── Generated
-├── README.md
-└── species_codes.tsv
+	.
+	├── Downloaded
+	├── Generated
+	├── README.md
+	└── species_codes.tsv
 
 
 - The downloaded directory contains 23 oomycete proteomes that were publically available.
