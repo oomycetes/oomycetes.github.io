@@ -63,6 +63,11 @@
 		<script src="js/misc/sigma.misc.drawHovers.js"></script>
 		<script src="js/sigma.parsers.json/sigma.parsers.json.js"></script>
 		<!-- End of SigmaJS libraries -->
+
+		<script type="text/javascript">
+			// Store varible to say this is the RxLR page which has additional network filtering options
+			var rxlr_page = true;
+		</script>
 	</head>
 	<body>
 
@@ -204,6 +209,8 @@
 				<br><input type="checkbox" checked id="blast-check"> BLAST method</input>
 				<br><input type="checkbox" checked id="wyl-check"> WYL domain</input>
 
+				<br><br><p id="nodes-visible-text" style="display: none;"><strong>Nodes visible</strong>: <span id="visible_nodes"></span>/<span id="total_nodes"></span></p>
+
 				<br><br><button type="button" id="button-help" class="btn btn-default" data-toggle="modal" data-target="#modal-help"><span class="glyphicon glyphicon-info-sign"> </span> Help</button>
 			</div> 
 			<br>
@@ -244,6 +251,14 @@
 					// Gephi and SigmaJS use difference coordinate systems
 					// Invert Y-coordinates of all nodes to match Gephi figures
 					nodes = graph.graph.nodes()
+
+					// Set text for number of nodes visible / total nodes
+					total_nodes = nodes.length;
+					$("#total_nodes").text(total_nodes);
+					$("#visible_nodes").text(total_nodes);
+
+					$("#nodes-visible-text").show()
+
 					for (var i = 0; i < nodes.length; i++) {
 						nodes[i].y = nodes[i].y * -1;
 					}

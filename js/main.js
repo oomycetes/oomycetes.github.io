@@ -79,7 +79,6 @@ order_dict["SAPA"] = "Saprolegniales";
 var current_id;
 var current_sequence;
 
-
 function nodeClicked(node) {
 	current_id = node.data.node.id;
 	$('#modal-label').text(node.data.node.id);
@@ -88,7 +87,6 @@ function nodeClicked(node) {
 	$('#genus').text(species_dict[node.data.node.id.substr(0,4)].split(" ")[0]);
 	$('#order').text(order_dict[node.data.node.id.substr(0,4)]);
 	$('#degree').text(parseInt(graph.graph.degree(node.data.node.label)));
-
 
 	// Get info regarding methods used to identify candidate RxLR
 	if(window.location.href.includes("rxlrs")) {
@@ -153,8 +151,6 @@ function getSequenceRxLRs(id) {
 	getSequence(id, file_path) 
 }
 
-
-
 function getSequence(id, file_path) {
 	$.get(file_path, function(data) {
 	    current_sequence = data.split("\n").slice(1).join("");
@@ -162,7 +158,6 @@ function getSequence(id, file_path) {
 	    $('#sequence').text(current_sequence);
 	}, 'text');
 };
-
 
 $("#button-close_help-modal1").click(function() {
 	$("#modal-help").modal("hide");
@@ -172,44 +167,167 @@ $("#button-close_help-modal2").click(function() {
 	$("#modal-help").modal("hide");
 })
 
-
 $("#blast").click(function() {
 	window.open("https://blast.ncbi.nlm.nih.gov/Blast.cgi?PROGRAM=blastp&PAGE_TYPE=BlastSearch&QUERY=" + current_sequence)
 });
 
 // Filter the network, only showing sequences that have ID/species/order matching filter text box
 $('#filter').on('input', function() {
+	filterNetwork();
+});
+
+function filterNetwork() {
 	var $this = $(this);
     var delay = 500; // Delay for 0.5 seconds
 
-    clearTimeout($this.data('timer'));
-    $this.data('timer', setTimeout(function(){
-        $this.removeData('timer');
+    var n_visible = graph.graph.nodes().length // Use to count how many nodes are visible
 
-        filter_value = $('#filter').val().trim().toUpperCase();
-		// Get nodes and hide those that don't match filter
-		nodes = graph.graph.nodes();
+    // Check if this is the RxLR page, if so need to consider additional filtering options
+    if (typeof rxlr_page !== 'undefined') {
+		// This is the RxLR page
+		clearTimeout($this.data('timer'));
+	    $this.data('timer', setTimeout(function(){
+	        $this.removeData('timer');
 
-		// If filter textbox is empty show all nodes
-		if(filter_value.length == 0) {
-			for(i = 0; i < nodes.length; i++) {
-				nodes[i].hidden = false;
+	        filter_value = $('#filter').val().trim().toUpperCase();
+
+			if( $("#win-check").is(":checked")) {
+				win_check = true;
 			}
-		}
-		else {
-			for(i = 0; i < nodes.length; i++) {
-				if(nodes[i].id.includes(filter_value) || idToSpecies(nodes[i].id).includes(filter_value) || idToOrder(nodes[i].id).includes(filter_value)) {
+			else {
+				win_check = false;
+			}
+
+			if( $("#regex-check").is(":checked")) {
+				regex_check = true;
+			}
+			else {
+				regex_check = false;
+			}
+
+			if( $("#hmm-check").is(":checked")) {
+				hmm_check = true;
+			}
+			else {
+				hmm_check = false;
+			}
+
+			if( $("#blast-check").is(":checked")) {
+				blast_check = true;
+			}
+			else {
+				blast_check = false;
+			}
+
+			if( $("#wyl-check").is(":checked")) {
+				wyl_check = true;
+			}
+			else {
+				wyl_check = false;
+			}
+
+			// Get nodes and hide those that don't match filter or method checkboxes
+			nodes = graph.graph.nodes();
+
+			// If filter textbox is empty show all nodes that match methods option
+			if(filter_value.length == 0) {
+				for(i = 0; i < nodes.length; i++) {
+					methods = getNodeValues(nodes[i]);
+					if( win_check && methods['win'] == true ) {
+						nodes[i].hidden = false;
+					}
+					else if ( regex_check && methods['regex'] == true ) {
+						nodes[i].hidden = false;
+					}
+					else if ( hmm_check && methods['hmm'] == true ) {
+						nodes[i].hidden = false;
+					}
+					else if ( blast_check && methods['blast'] == true ) {
+						nodes[i].hidden = false;
+					}
+					else if ( wyl_check && methods['wyl'] == true ) {
+						nodes[i].hidden = false;
+					}
+					else {
+						nodes[i].hidden = true;
+						n_visible -= 1;
+					}
+				}
+				$("#visible_nodes").text(n_visible);
+			}
+			else {
+				for(i = 0; i < nodes.length; i++) {
+					// Find out if nodes hits at least on of the selected/checked methods
+					methods = getNodeValues(nodes[i]);
+					match_method = false;
+
+					if( win_check && methods['win'] == true ) {
+						match_method = true;
+					}
+					else if ( regex_check && methods['regex'] == true ) {
+						match_method = true;
+					}
+					else if ( hmm_check && methods['hmm'] == true ) {
+						match_method = true;
+					}
+					else if ( blast_check && methods['blast'] == true ) {
+						match_method = true;
+					}
+					else if ( wyl_check && methods['wyl'] == true ) {
+						match_method = true;
+					}
+
+					if(nodes[i].id.includes(filter_value) || idToSpecies(nodes[i].id).includes(filter_value) || idToOrder(nodes[i].id).includes(filter_value)) {
+						if (match_method) {
+							nodes[i].hidden = false;
+						}
+						else {
+							nodes[i].hidden = true;
+							n_visible -= 1;
+						}
+					}
+					else {
+						nodes[i].hidden = true;
+						n_visible -= 1
+					}
+				}
+				$("#visible_nodes").text(n_visible);
+			}
+			graph.refresh({ skipIndexation: true});
+	    }, delay));
+
+	}
+	else {
+		clearTimeout($this.data('timer'));
+	    $this.data('timer', setTimeout(function(){
+	        $this.removeData('timer');
+
+	        filter_value = $('#filter').val().trim().toUpperCase();
+			// Get nodes and hide those that don't match filter
+			nodes = graph.graph.nodes();
+
+			// If filter textbox is empty show all nodes
+			if(filter_value.length == 0) {
+				for(i = 0; i < nodes.length; i++) {
 					nodes[i].hidden = false;
 				}
-				else {
-					nodes[i].hidden = true;
+			}
+			else {
+				for(i = 0; i < nodes.length; i++) {
+					if(nodes[i].id.includes(filter_value) || idToSpecies(nodes[i].id).includes(filter_value) || idToOrder(nodes[i].id).includes(filter_value)) {
+						nodes[i].hidden = false;
+					}
+					else {
+						nodes[i].hidden = true;
+						n_visible -= 1;
+					}
 				}
 			}
-		}
-		graph.refresh({ skipIndexation: true});
-    }, delay));
-
-});
+			$("#visible_nodes").text(n_visible);
+			graph.refresh({ skipIndexation: true});
+	    }, delay));
+	}
+}
 
 function idToSpecies(input_id) {
 	return(species_dict[input_id.substr(0,4)]).toUpperCase();
@@ -258,88 +376,21 @@ function getNodeValues(node) {
 }
 
 $("#win-check").click(function() {
-	filter_methods();
+	filterNetwork();
 })
 
 $("#regex-check").click(function() {
-	filter_methods();
+	filterNetwork();
 })
 
 $("#hmm-check").click(function() {
-	filter_methods();
+	filterNetwork();
 })
 
 $("#blast-check").click(function() {
-	filter_methods();
+	filterNetwork();
 })
 
 $("#wyl-check").click(function() {
-	filter_methods();
+	filterNetwork();
 })
-
-function filter_methods() {
-	nodes = graph.graph.nodes();
-
-	if( $("#win-check").is(":checked")) {
-		win_check = true;
-	}
-	else {
-		win_check = false;
-	}
-
-	if( $("#regex-check").is(":checked")) {
-		regex_check = true;
-	}
-	else {
-		regex_check = false;
-	}
-
-	if( $("#hmm-check").is(":checked")) {
-		hmm_check = true;
-	}
-	else {
-		hmm_check = false;
-	}
-
-	if( $("#blast-check").is(":checked")) {
-		blast_check = true;
-	}
-	else {
-		blast_check = false;
-	}
-
-	if( $("#wyl-check").is(":checked")) {
-		wyl_check = true;
-	}
-	else {
-		wyl_check = false;
-	}
-
-	n_visible = nodes.length;
-	for (var i = 0; i < nodes.length; i++) {
-		node = nodes[i];
-		methods = getNodeValues(node);
-
-		if( win_check && methods['win'] == true ) {
-			node.hidden = false;
-		}
-		else if ( regex_check && methods['regex'] == true ) {
-			node.hidden = false;
-		}
-		else if ( hmm_check && methods['hmm'] == true ) {
-			node.hidden = false;
-		}
-		else if ( blast_check && methods['blast'] == true ) {
-			node.hidden = false;
-		}
-		else if ( wyl_check && methods['wyl'] == true ) {
-			node.hidden = false;
-		}
-		else {
-			node.hidden = true;
-			n_visible -= 1;
-		}
-	}
-	console.log(n_visible + " nodes visible");
-	graph.refresh({ skipIndexation: true});
-}
