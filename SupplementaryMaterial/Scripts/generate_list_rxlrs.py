@@ -188,7 +188,6 @@ def main():
 
 			print line
 
-
 	print ""
 	print "Win:", len(win_rlxrs)
 	print "Regex:", len(regex_rxlrs)
