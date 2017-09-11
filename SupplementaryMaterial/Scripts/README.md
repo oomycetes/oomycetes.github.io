@@ -35,3 +35,21 @@ Output columns:
 - **Protein length**
 - **Protein sequence**
 
+------
+
+The Python script `parse_signal_results.py` is used to parse SignalP results to generate the predicted secretome.
+
+Example usage:
+
+	parse_signalp_results.py signalp_results.txt input.fasta output.fasta
+
+Input for `parse_signal_results.py` is:
+
+- Output file from SignalP (3.0) in short format
+- Original fasta sequences corresponding to the SignalP output file (proteomes)
+- Ouput fasta filename which stores the mature protein sequences
+
+Proteins with HMM S prob >= 0.9, NN Ymax score >= 0.5 and NN D-score >= 0.5 are considered potentially secreted and were then
+submitted to [TMHMM Web Server](http://www.cbs.dtu.dk/services/TMHMM/) to predict transmembrane helices. Proteins that
+did not contain transmembrane helicies after the SignalP cleavage site and matched the above criteria were considered
+secreted.
