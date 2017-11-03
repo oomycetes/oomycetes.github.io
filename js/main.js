@@ -1,6 +1,6 @@
 var species_dict = {};
 species_dict["ALCA"] = "Albugo candida";
-species_dict["ALLA"] = "Albugo labiachii";
+species_dict["ALLA"] = "Albugo laibachii";
 species_dict["APAS"] = "Aphanomyces astaci";
 species_dict["APIN"] = "Aphanomyces invadans";
 species_dict["HYAP"] = "Hyaloperonospora arabidopsis";
