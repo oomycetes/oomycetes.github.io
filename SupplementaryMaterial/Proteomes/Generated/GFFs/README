@@ -1,0 +1,3 @@
+GFF files for the predicted proteomes of 14 oomycete species that were generated using Augustus (or using GeneMark for Pilasporangium apinafurcum).
+
+Gene numbers correspond to the gene IDs in FASTA files. For example for Phytophthora agathidicida (PHAG), augustus gene prediction "g1" in the GFF file corresponds to "PHAG|00001" in the FASTA file.
