@@ -10,4 +10,4 @@ Interactive versions of the network are available [here](https://oomycetes.githu
 
 
 #### Reference:
-McGowan, J. and Fitzpatrick, D. (2017). Genomic, Network, and Phylogenetic Analysis of the Oomycete Effector Arsenal. mSphere, 2(6), pp.e00408-17.] [Link](http://msphere.asm.org/content/2/6/e00408-17)
+McGowan, J. and Fitzpatrick, D. (2017). Genomic, Network, and Phylogenetic Analysis of the Oomycete Effector Arsenal. mSphere, 2(6), pp.e00408-17. [Link](http://msphere.asm.org/content/2/6/e00408-17)
